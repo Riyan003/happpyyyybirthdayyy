@@ -123,3 +123,79 @@ document.getElementById('unlock-button').addEventListener('click', () => {
   alert('Surprise Unlocked! 🎉');
   // Add animation or redirect to the next section
 });
+const birthday = new Date('March 29, 2025 00:00:00 GMT+05:30').getTime(); // IST Time
+// Game Variables
+const paddle = document.getElementById('paddle');
+const emoji = document.getElementById('emoji');
+const scoreDisplay = document.getElementById('score');
+let score = 0;
+let emojiX = 50;
+let emojiY = 50;
+let emojiSpeedX = 3;
+let emojiSpeedY = 3;
+
+// Move Paddle
+document.addEventListener('mousemove', (e) => {
+  const container = document.getElementById('game-container');
+  const containerRect = container.getBoundingClientRect();
+  const paddleX = e.clientX - containerRect.left - paddle.offsetWidth / 2;
+  paddle.style.left = `${paddleX}px`;
+});
+
+// Move Emoji
+const moveEmoji = () => {
+  const container = document.getElementById('game-container');
+  const containerRect = container.getBoundingClientRect();
+  const emojiRect = emoji.getBoundingClientRect();
+
+  // Check Collision with Walls
+  if (emojiX + emojiRect.width > containerRect.width || emojiX < 0) {
+    emojiSpeedX = -emojiSpeedX;
+  }
+  if (emojiY < 0) {
+    emojiSpeedY = -emojiSpeedY;
+  }
+
+  // Check Collision with Paddle
+  if (
+    emojiY + emojiRect.height > paddle.offsetTop &&
+    emojiX + emojiRect.width > paddle.offsetLeft &&
+    emojiX < paddle.offsetLeft + paddle.offsetWidth
+  ) {
+    emojiSpeedY = -emojiSpeedY;
+    score++;
+    scoreDisplay.innerText = `Score: ${score}`;
+
+    // Unlock Chatbot at 10 Points
+    if (score === 10) {
+      alert('You unlocked the chatbot! 🎉');
+      document.getElementById('chatbot-button').style.display = 'block';
+    }
+  }
+
+  // Update Emoji Position
+  emojiX += emojiSpeedX;
+  emojiY += emojiSpeedY;
+  emoji.style.left = `${emojiX}px`;
+  emoji.style.top = `${emojiY}px`;
+
+  // Game Over
+  if (emojiY + emojiRect.height > containerRect.height) {
+    alert('Game Over! Try again.');
+    resetGame();
+  }
+
+  requestAnimationFrame(moveEmoji);
+};
+
+// Reset Game
+const resetGame = () => {
+  emojiX = 50;
+  emojiY = 50;
+  score = 0;
+  scoreDisplay.innerText = `Score: ${score}`;
+};
+
+// Start Game
+moveEmoji();
+
