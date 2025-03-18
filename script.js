@@ -1,5 +1,7 @@
 // Countdown Timer
-const birthday = new Date('March 29, 2025 00:00:00 GMT+05:30').getTime(); // IST Time
+// Temporary Countdown (1 minute from now)
+const birthday = new Date(Date.now() + 60000).getTime(); // 1 minute from now
+console.log('Countdown set to:', new Date(birthday));
 
 const countdown = () => {
   const now = new Date().getTime();
@@ -28,4 +30,20 @@ setInterval(countdown, 1000);
 document.getElementById('unlock-button').addEventListener('click', () => {
   document.getElementById('homepage').classList.add('hidden');
   document.getElementById('memory-lane').classList.remove('hidden');
+  document.getElementById('game').classList.remove('hidden'); // Show the game section
 });
+// Start Game
+startButton.addEventListener('click', () => {
+  console.log('Game started!');
+  gameStarted = true;
+  startButton.style.display = 'none';
+  moveEmoji();
+});
+
+// Move Emoji
+const moveEmoji = () => {
+  if (!gameStarted) return;
+  console.log('Moving emoji...');
+
+  // Rest of the game logic...
+};
