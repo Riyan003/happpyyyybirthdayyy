@@ -1,5 +1,5 @@
 // Countdown Timer
-const birthday = new Date(Date.now() + 60000).getTime();
+const birthday = new Date('March 29, 2025 00:00:00 GMT+05:30').getTime(); // IST Time
 
 const countdown = () => {
   const now = new Date().getTime();
@@ -24,7 +24,6 @@ const countdown = () => {
 
 setInterval(countdown, 1000);
 
-// Unlock Button
 // Unlock Button
 document.getElementById('unlock-button').addEventListener('click', () => {
   document.getElementById('homepage').classList.add('hidden');
