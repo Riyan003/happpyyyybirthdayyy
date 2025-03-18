@@ -1,5 +1,5 @@
 // Countdown Timer
-const birthday = new Date('March 18, 2025 18:47:00 GMT+05:30').getTime(); // IST Time
+const birthday = new Date('March 18, 2025 18:50:00 GMT+05:30').getTime(); // IST Time
 
 const countdown = () => {
   const now = new Date().getTime();
