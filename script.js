@@ -1,7 +1,5 @@
-// Countdown Timer
 // Temporary Countdown (1 minute from now)
 const birthday = new Date(Date.now() + 60000).getTime(); // 1 minute from now
-console.log('Countdown set to:', new Date(birthday));
 
 const countdown = () => {
   const now = new Date().getTime();
@@ -32,21 +30,8 @@ document.getElementById('unlock-button').addEventListener('click', () => {
   document.getElementById('memory-lane').classList.remove('hidden');
   document.getElementById('game').classList.remove('hidden'); // Show the game section
 });
-// Start Game
-startButton.addEventListener('click', () => {
-  console.log('Game started!');
-  gameStarted = true;
-  startButton.style.display = 'none';
-  moveEmoji();
-});
 
-// Move Emoji
-const moveEmoji = () => {
-  if (!gameStarted) return;
-  console.log('Moving emoji...');
-
-  // Rest of the game logic...
-  // Game Variables
+// Game Variables
 const paddle = document.getElementById('paddle');
 const emoji = document.getElementById('emoji');
 const scoreDisplay = document.getElementById('score');
@@ -140,5 +125,4 @@ const resetGame = () => {
   scoreDisplay.innerText = `Score: ${score}`;
   startButton.style.display = 'block';
   gameStarted = false;
-};
 };
