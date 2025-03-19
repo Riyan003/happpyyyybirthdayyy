@@ -41,8 +41,8 @@ const gameContainer = document.getElementById('game-container');
 let score = 0;
 let emojiX = 50;
 let emojiY = 50;
-let emojiSpeedX = 3;
-let emojiSpeedY = 3;
+let emojiSpeedX = 3; // Fixed horizontal speed
+let emojiSpeedY = 3; // Fixed vertical speed
 let gameStarted = false;
 let gamePaused = false;
 let chatbotUnlocked = false;
@@ -105,10 +105,10 @@ const moveEmoji = () => {
 
   // Check Collision with Walls
   if (emojiX + emojiRect.width > containerRect.width || emojiX < 0) {
-    emojiSpeedX = -emojiSpeedX;
+    emojiSpeedX = -emojiSpeedX; // Reverse horizontal direction
   }
   if (emojiY < 0) {
-    emojiSpeedY = -emojiSpeedY;
+    emojiSpeedY = -emojiSpeedY; // Reverse vertical direction
   }
 
   // Check Collision with Paddle
@@ -117,11 +117,14 @@ const moveEmoji = () => {
     emojiX + emojiRect.width > paddle.offsetLeft &&
     emojiX < paddle.offsetLeft + paddle.offsetWidth
   ) {
-    // Adjust emoji speed based on where it hits the paddle
+    // Calculate the hit position on the paddle
     const paddleCenter = paddle.offsetLeft + paddle.offsetWidth / 2;
     const hitPosition = (emojiX + emojiRect.width / 2 - paddleCenter) / (paddle.offsetWidth / 2);
-    emojiSpeedX = hitPosition * 5; // Adjust horizontal speed
+
+    // Adjust horizontal speed based on hit position
+    emojiSpeedX = hitPosition * 5; // Adjust angle based on where it hits the paddle
     emojiSpeedY = -Math.abs(emojiSpeedY); // Ensure it bounces upward
+
     score++;
     scoreDisplay.innerText = `Score: ${score}`;
 
