@@ -118,3 +118,13 @@ body {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+#pause-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-left: 10px;
+  display: none; /* Hidden by default */
+}

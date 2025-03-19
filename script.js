@@ -36,27 +36,54 @@ const paddle = document.getElementById('paddle');
 const emoji = document.getElementById('emoji');
 const scoreDisplay = document.getElementById('score');
 const startButton = document.getElementById('start-button');
+const pauseButton = document.getElementById('pause-button');
+const gameContainer = document.getElementById('game-container');
 let score = 0;
 let emojiX = 50;
 let emojiY = 50;
 let emojiSpeedX = 3;
 let emojiSpeedY = 3;
 let gameStarted = false;
+let gamePaused = false;
+let chatbotUnlocked = false;
+
+// Hide Game Initially
+gameContainer.style.display = 'none';
+pauseButton.style.display = 'none';
 
 // Start Game
 startButton.addEventListener('click', () => {
-  console.log('Game started!');
-  gameStarted = true;
-  startButton.style.display = 'none';
-  moveEmoji();
+  if (!gameStarted) {
+    console.log('Game started!');
+    gameStarted = true;
+    gamePaused = false;
+    startButton.innerText = 'Restart Game';
+    gameContainer.style.display = 'block';
+    pauseButton.style.display = 'block';
+    resetGame();
+    moveEmoji();
+  } else {
+    resetGame();
+  }
+});
+
+// Pause Game
+pauseButton.addEventListener('click', () => {
+  if (gamePaused) {
+    gamePaused = false;
+    pauseButton.innerText = 'Pause';
+    moveEmoji();
+  } else {
+    gamePaused = true;
+    pauseButton.innerText = 'Resume';
+  }
 });
 
 // Move Paddle
 document.addEventListener('mousemove', (e) => {
-  if (!gameStarted) return;
+  if (!gameStarted || gamePaused) return;
 
-  const container = document.getElementById('game-container');
-  const containerRect = container.getBoundingClientRect();
+  const containerRect = gameContainer.getBoundingClientRect();
   const paddleX = e.clientX - containerRect.left - paddle.offsetWidth / 2;
 
   // Ensure paddle stays within the game container
@@ -71,10 +98,9 @@ document.addEventListener('mousemove', (e) => {
 
 // Move Emoji
 const moveEmoji = () => {
-  if (!gameStarted) return;
+  if (!gameStarted || gamePaused) return;
 
-  const container = document.getElementById('game-container');
-  const containerRect = container.getBoundingClientRect();
+  const containerRect = gameContainer.getBoundingClientRect();
   const emojiRect = emoji.getBoundingClientRect();
 
   // Check Collision with Walls
@@ -91,13 +117,21 @@ const moveEmoji = () => {
     emojiX + emojiRect.width > paddle.offsetLeft &&
     emojiX < paddle.offsetLeft + paddle.offsetWidth
   ) {
+    // Fix Paddle Collision Bug
+    const paddleCenter = paddle.offsetLeft + paddle.offsetWidth / 2;
+    const hitPosition = (emojiX + emojiRect.width / 2 - paddleCenter) / (paddle.offsetWidth / 2);
+    emojiSpeedX = hitPosition * 5; // Adjust emoji speed based on hit position
     emojiSpeedY = -emojiSpeedY;
     score++;
     scoreDisplay.innerText = `Score: ${score}`;
 
     // Unlock Chatbot at 10 Points
-    if (score === 10) {
-      alert('You unlocked the chatbot! 🎉');
+    if (score === 10 && !chatbotUnlocked) {
+      chatbotUnlocked = true;
+      gameStarted = false;
+      gamePaused = true;
+      pauseButton.style.display = 'none';
+      alert('🎉 Easter Egg AI Chatbot (Riyan Version) Unlocked!');
       document.getElementById('chatbot-button').style.display = 'block';
     }
   }
@@ -110,8 +144,10 @@ const moveEmoji = () => {
 
   // Game Over
   if (emojiY + emojiRect.height > containerRect.height) {
+    gameStarted = false;
+    gamePaused = true;
+    pauseButton.style.display = 'none';
     alert('Game Over! Try again.');
-    resetGame();
   }
 
   requestAnimationFrame(moveEmoji);
@@ -123,6 +159,4 @@ const resetGame = () => {
   emojiY = 50;
   score = 0;
   scoreDisplay.innerText = `Score: ${score}`;
-  startButton.style.display = 'block';
-  gameStarted = false;
 };
