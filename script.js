@@ -117,11 +117,11 @@ const moveEmoji = () => {
     emojiX + emojiRect.width > paddle.offsetLeft &&
     emojiX < paddle.offsetLeft + paddle.offsetWidth
   ) {
-    // Fix Paddle Collision Bug
+    // Adjust emoji speed based on where it hits the paddle
     const paddleCenter = paddle.offsetLeft + paddle.offsetWidth / 2;
     const hitPosition = (emojiX + emojiRect.width / 2 - paddleCenter) / (paddle.offsetWidth / 2);
-    emojiSpeedX = hitPosition * 5; // Adjust emoji speed based on hit position
-    emojiSpeedY = -emojiSpeedY;
+    emojiSpeedX = hitPosition * 5; // Adjust horizontal speed
+    emojiSpeedY = -Math.abs(emojiSpeedY); // Ensure it bounces upward
     score++;
     scoreDisplay.innerText = `Score: ${score}`;
 
